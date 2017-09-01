@@ -22,9 +22,9 @@ $(function(){
               return item.id === obj.id;
             });
             //TODO - ajax call to add on server
-            $.post(`/days/${ days[idx].id }/restaurants/${ item.id }`);
-            $.post(`/days/${ days[idx].id }/hotels/${ item.id }`);
-            $.post(`/days/${ days[idx].id }/activities/${ item.id }`);
+            $.post(`/days/${ days[idx].id }/${ obj.key }/${ item.id }`)
+            // $.post(`/days/${ days[idx].id }/hotels/${ item.id }`);
+            // $.post(`/days/${ days[idx].id }/activities/${ item.id }`);
             renderDayAndOptions();
           }
         });
