@@ -22,7 +22,9 @@ $(function(){
               return item.id === obj.id;
             });
             //TODO - ajax call to add on server
-            days[idx][obj.key].push(item);
+            $.post(`/days/${ days[idx].id }/restaurants/${ item.id }`);
+            $.post(`/days/${ days[idx].id }/hotels/${ item.id }`);
+            $.post(`/days/${ days[idx].id }/activities/${ item.id }`);
             renderDayAndOptions();
           }
         });
@@ -49,11 +51,20 @@ $(function(){
             return;
           }
           //TODO - remove the day on server
-          days = days.filter(function(day, _idx){
-            return _idx !== idx;
-          });
-          idx = 0;
-          renderDayPicker();
+          // console.log('removeDay idx = ', ++idx);
+          var dayPlusOne = idx + 1;
+          $.ajax({ url: `/days/${ dayPlusOne }`, type: 'DELETE' })
+            .then(result => {
+              // days = days.filter(function(day, _idx){
+              //   return _idx !== idx;
+              // });
+              idx = 0;
+              renderDayPicker();
+            })
+            .catch(err => {
+              console.log('err in ajax delete = ', err);
+            });
+
         }
 
         var selectDay = function(_idx){
@@ -81,12 +92,13 @@ $(function(){
       //this function render day
       function renderDay(){
         var onRemoveItem = function(obj){
-          days[idx][obj.key] = days[idx][obj.key].filter(function(item){
-            return item.id !== obj.id;
-          });
-          //TODO - update on server
+          // days[idx][obj.key] = days[idx][obj.key].filter(function(item){
+            // return item.id !== obj.id;
+          // });
+          $.ajax({ url: `/days/${ days[idx].id }/restaurants/${ obj.id }`, type: 'DELETE' });
           renderDayAndOptions();
-        }
+        };
+        //TODO - update on server
         Day({
           id: '#day',
           day: days[idx],
