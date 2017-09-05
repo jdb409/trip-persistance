@@ -56,14 +56,6 @@ app.delete('/:dayId/restaurants/:id', (req, res, next) => {
     .then(([ day, restaurant ]) => {
       return day.removeRestaurants(restaurant);
     })
-  // return Day.destroy({
-  //   include: [{
-  //     model: Restaurant,
-  //     through: {
-  //       where: { restaurantId: req.params.id }
-  //     }
-  //   }]
-  // })
     .catch(err => {
       console.log(err);
     })
@@ -85,6 +77,20 @@ app.post('/:dayId/hotels/:id', (req, res, next) => {
     // })
 });
 
+app.delete('/:dayId/hotels/:id', (req, res, next) => {
+  // console.log('getting to delete restaurants!');
+  return Promise.all([
+    Day.findById(req.params.dayId),
+    Hotel.findById(req.params.id)
+  ])
+    .then(([ day, hotel ]) => {
+      return day.removeHotels(hotel);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+});
+
 // activities
 app.post('/:dayId/activities/:id', (req, res, next) => {
   console.log('post dayId = ', req.params.dayId);
@@ -95,6 +101,20 @@ app.post('/:dayId/activities/:id', (req, res, next) => {
   ])
     .then(([ day, activity ]) => {
       return day.addActivities(activity);
+    })
+});
+
+app.delete('/:dayId/activities/:id', (req, res, next) => {
+  // console.log('getting to delete restaurants!');
+  return Promise.all([
+    Day.findById(req.params.dayId),
+    Activity.findById(req.params.id)
+  ])
+    .then(([ day, activity ]) => {
+      return day.removeActivity(activity);
+    })
+    .catch(err => {
+      console.log(err);
     })
 });
 

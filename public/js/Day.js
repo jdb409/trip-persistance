@@ -33,6 +33,7 @@ function Day(config){
       id: $this.attr('data-id')*1,
       key: $this.attr('data-key')
     });
+    
   });
   container.empty();
   container.append($html);
