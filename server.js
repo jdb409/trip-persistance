@@ -53,7 +53,7 @@ app.use((err, req, res, next)=> {
   res.status(err.status || 500).render('error', { error: err });
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 db.sync()
   .then(()=> db.seed())
   .then( result => {
